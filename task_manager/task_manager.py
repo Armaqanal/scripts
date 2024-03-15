@@ -1,46 +1,25 @@
 import argparse
-class TaskManager:
-    task_list=[]
-    def __init__(self):
-        task_done=False
-    def add_task(self,add):
-        self.task_list.append(add) #should be self or class name
-    def done_task(self,done_task): #this work in my list has done
-        self.done_task=[]
-        for i in self.task_list:
-            if i:
-                self.task_done=True
-                self.done_task.append(i)
-        return None
 
-    def remove_task(self,remove):
-        self.remove_task=remove
-        for index,name in enumerate(1,self.task_list):
-            if 0 < index +1 <= len(self.task_list):
-                del index
+from task import Task, TaskManager
 
-    def display_list():
-        pass
+if __name__ == '__main__':
 
-        
-parser=argparse.ArgumentParser()
-parser.add_argument("chose",choices=["add" , "done" , "remove","list"],help="tasks")
-args=parser.parse_args()
-if args.choices == "add" :
-    
-elif args.choices == "done":
-    pass    
-elif args.choices == "remove":   
-    pass 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("mode", choices=["add", "done", "remove", "list"], help="tasks")
+    parser.add_argument("task_name_or_id", nargs='?', help="task name or task id")
+    args = parser.parse_args()
 
+    task_manager = TaskManager()
 
-
-#parser.add_argument("action" , entekhab = ["add" , "done" , "remove"]
-
-
-# if args.action == "add" :
-#     pass
-# elif args.action == "done":
-#     pass    
-# elif args.action == "remove":   
-#     pass 
+    if args.mode == "add":
+        if args.task_name_or_id is not None:
+            task_manager.add_task(new_task=Task(args.task_name_or_id))
+            print(args.task_name_or_id)
+    elif args.mode == "list":
+        task_manager.display_list()
+    elif args.mode == "done":
+        if args.task_name_or_id is not None:
+            task_manager.done_task(int(args.task_name_or_id))
+    elif args.mode == "remove":
+        if args.task_name_or_id is not None:
+            task_manager.remove_task(int(args.task_name_or_id))
